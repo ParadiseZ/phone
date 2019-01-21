@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--<script th:src="@{webjars/jquery/3.3.1-1/jquery.js}" type="text/javascript" charset="utf-8"></script>-->
+    <script
+            src="https://code.jquery.com/jquery-1.7.2.min.js"
+            integrity="sha256-R7aNzoy2gFrVs+pNJ6+SokH04ppcEqJ0yFLkNGoFALQ="
+            crossorigin="anonymous"></script>
+</head>
+</head>
+<body class="bodyMy">
+<form method="post" id="formMy" action="/choose" onsubmit="return checkMy()">
+    <input class="sender" name="sender" th:value="${sender}"><br/><br/>
+    <input class="choose" name="chooseOf">
+    [[${sender}]]
+    <input type="checkbox" class="username" name="username" value="光头强"><button class="btn" type="submit">和光头强聊天</button><br/><br/>
+    <input type="checkbox" class="username" name="username" value="熊大"><button class="btn" type="熊大">和熊大聊天</button><br/><br/>
+    <input type="checkbox" class="username" name="username" value="熊二"><button class="btn" type="submit">和熊二聊天</button><br/><br/>
+    <button type="submit">确认</button>
+</form>
+
+
+</body>
+<script>
+    $(function () {
+        $(".btn").click(function () {
+            alert(222)
+            // var ls = $("[name='checkbox']").attr("checked");
+
+
+        })
+    })
+
+    function checkMy() {
+        var ll = $("#formMy :checkbox[checked]").val();
+        $(".choose").val(ll);
+        return true
+    }
+</script>
+</html>

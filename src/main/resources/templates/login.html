@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    .redd{
+        color: red;
+    }
+    .bluee{
+        color: deepskyblue;
+    }
+</style>
+<body>
+<form action="/login" method="post">
+    <input type="hidden" th:with="resul1=(1>3?true:(1>1?true:false))">
+    <span th:class="${resul1==true}?'bluee':'redd'">你好</span>
+    <span th:class="1>2?bluee:redd">不好</span>
+    <label>用户名：</label><input type="text" name="username"><br/><br/>
+    <label>密码：</label><input type="text" name="password"><br/><br/>
+    <input type="submit" value="登录">
+</form>
+
+</body>
+</html>

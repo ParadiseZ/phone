@@ -1,0 +1,75 @@
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" th:href="@{css/chat.css}">
+        <link rel="stylesheet" th:href="@{css/chatonline.css}">
+    </head>
+    <body>
+        <div class="main">
+            <div class="leftPane">
+                <div class="showname">
+                    <span class="usernamePane" style="color: #fff;"><p th:if="not ${#strings.isEmpty(user)}" th:text="${user}"></p></span>
+                </div>
+
+                <div th:if="not ${#strings.isEmpty(userConInfo)}" th:each="recInfo:${userConInfo}" data-v-2cbee71c="" class="left2 dialog active">
+                    <div  class="dialog-avator"></div>
+
+                    <span data-v-2cbee71c="" class="dialog-name ellipsis">[[${recInfo.usernameFind}]]</span>
+                    <div data-v-2cbee71c="" class="label dialog-label yellow">
+                        店铺
+                    </div>
+                </div>
+
+
+                <div data-v-2cbee71c="" class="left2 dialog active">
+                    <div  class="dialog-avator"></div>
+                    <span data-v-2cbee71c="" class="dialog-name ellipsis">巨臣昌隆服饰专营</span> 
+                    <div data-v-2cbee71c="" class="label dialog-label yellow">
+                        店铺
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="topPane">
+                <div class="showshopname"><span class="shopname">晨晨专卖店</span></div>
+            </div>
+
+
+            <div class="chatmain">
+                <input type="hidden" th:with="isNotEm=${!#strings.isEmpty(userConInfo)}&&${not #strings.isEmpty(newsList)}">
+                <div style="display: none;" th:if="${isNotEm}==true" th:each="getRN:${userConInfo}">
+                    <input type="hidden" th:with="reNameBoo=(${getRN.userIdAndType.userIdFind}==${newsList.get(0).u_Id}&&(${getRN.userIdAndType.userType} eq ${newsList.get(0).u_IdType})?true:(${getRN.userIdAndType.userIdFind}==${newsList.get(0).s_Id}&&(${getRN.userIdAndType.userType} eq ${newsList.get(0).s_IdType})?true:false))">
+                    <input type="hidden" th:if="${reNameBoo==true}" th:with="reName=${getRN.usernameFind}">
+                </div>
+                <div class="msgmain" th:if="${not #strings.isEmpty(newsList)}" th:each="news:${newsList}">
+                    <p class="msg-left">小米自营店官方客服</p>
+                    <input hidden th:with="resul1=((${senderId}==${news.u_Id}&&${u_IdType}==${news.u_IdType})?true:((${senderId}==${news.s_Id}&&${u_IdType}==${news.s_IdType})?true:false))">
+                    <p th:class="(${resul1}==true)? 'msg-right':'msg-left'" th:text="${resul1==true}?${senderName}:${reName}"></p>
+                    <div th:class="(${resul1}==true)? 'msgshow msg-right fr':'msgshow msg-left'">
+                       <p>你好啊</p>
+                    </div>                    
+                </div>
+
+                
+
+            </div>
+
+
+
+
+            <div class="buttomPane">
+                <textarea class="inputChat" placeholder="请输入"></textarea>
+                <button class="sure">发送</button>
+            </div>
+        </div>
+    </body>
+    <script>
+        $(function () {
+            var leftPane = $(".leftPane");
+            var leftList = $(leftPane).getElementsByClassName("left2");
+        })
+    </script>
+</html>
