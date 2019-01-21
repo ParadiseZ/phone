@@ -1,9 +1,6 @@
 package org.lanqiao.phone.controller;
 
-import org.lanqiao.phone.pojo.ConnectionInfo;
-import org.lanqiao.phone.pojo.News;
-import org.lanqiao.phone.pojo.UserConnectionInfo;
-import org.lanqiao.phone.pojo.UserIdAndType;
+import org.lanqiao.phone.pojo.*;
 import org.lanqiao.phone.service.INewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,6 +23,14 @@ public class NewsController {
         String recieverIdStr = req.getParameter("recieverId");
         String senderIdStr = req.getParameter("senderId");
         String recieverType =req.getParameter("recieverType");
+        UserLogin personal = (UserLogin)session.getAttribute("userLogin");
+        BackUser bck;
+        if(StringUtils.isEmpty(personal)){
+            bck = (BackUser)session.getAttribute("User");
+            if(StringUtils.isEmpty(bck)){
+
+            }
+        }
         int senderId = 0;
         if(!StringUtils.isEmpty(senderIdStr)){
             senderId =Integer.parseInt(req.getParameter("senderId")) ;
