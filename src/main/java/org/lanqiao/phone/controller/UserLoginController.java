@@ -49,7 +49,8 @@ public class UserLoginController {
         } else {
             HttpSession session = req.getSession();
             session.setAttribute("userLogin", retUserLogin);
-            return "index";
+//            return "index";
+            return "choose";
         }
     }
 }

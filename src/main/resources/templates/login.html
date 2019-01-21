@@ -32,6 +32,7 @@
 						<div class="clear"></div>
 					</div>
 				</div>
+				<span th:if="${!#strings.isEmpty(msg)}" th:text="${msg}" style="color: #fff"></span>
 				<div class="login_submit">
 					<input class="submit" type="submit" name="submit" value="立即登录" >
 				</div>

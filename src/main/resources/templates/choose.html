@@ -11,13 +11,14 @@
 </head>
 </head>
 <body class="bodyMy">
-<form method="post" id="formMy" action="/choose" onsubmit="return checkMy()">
-    <input class="sender" name="sender" th:value="${sender}"><br/><br/>
-    <input class="choose" name="chooseOf">
-    [[${sender}]]
-    <input type="checkbox" class="username" name="username" value="光头强"><button class="btn" type="submit">和光头强聊天</button><br/><br/>
-    <input type="checkbox" class="username" name="username" value="熊大"><button class="btn" type="熊大">和熊大聊天</button><br/><br/>
-    <input type="checkbox" class="username" name="username" value="熊二"><button class="btn" type="submit">和熊二聊天</button><br/><br/>
+<form method="post" id="formMy" action="/getnews" onsubmit="return checkMy()">
+    <!--<input class="sender" name="sender" th:value="${sender}"><br/><br/>-->
+    <input class="choose" name="chooseOf"><br/><br/>
+    [[${sender}]]<br/><br/>
+    <input type="hidden" value="商家" name="recieverType">
+    <input type="checkbox" class="username" checked name="recieverId01" value="1"><button class="btn" type="submit">和光头强聊天</button><br/><br/>
+    <input type="checkbox" class="username" name="recieverId02" value="2"><button class="btn" type="熊大">和熊大聊天</button><br/><br/>
+    <input type="checkbox" class="username" name="recieverId03" value="3"><button class="btn" type="submit">和熊二聊天</button><br/><br/>
     <button type="submit">确认</button>
 </form>
 

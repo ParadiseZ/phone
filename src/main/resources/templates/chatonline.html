@@ -39,21 +39,13 @@
 
 
             <div class="chatmain">
-                <input type="hidden" th:with="isNotEm=${!#strings.isEmpty(userConInfo)}&&${not #strings.isEmpty(newsList)}">
-                <div style="display: none;" th:if="${isNotEm}==true" th:each="getRN:${userConInfo}">
-                    <input type="hidden" th:with="reNameBoo=(${getRN.userIdAndType.userIdFind}==${newsList.get(0).u_Id}&&(${getRN.userIdAndType.userType} eq ${newsList.get(0).u_IdType})?true:(${getRN.userIdAndType.userIdFind}==${newsList.get(0).s_Id}&&(${getRN.userIdAndType.userType} eq ${newsList.get(0).s_IdType})?true:false))">
-                    <input type="hidden" th:if="${reNameBoo==true}" th:with="reName=${getRN.usernameFind}">
+                <div class="msgmain" th:if="${!#strings.isEmpty(newsList)}" th:each="news:${newsList}">
+                    <!--<p class="msg-left">小米自营店官方客服</p>-->
+                    <p th:class="${(u_IdType eq news.u_IdType)?'msg-right':'msg-left'}" th:text="${(u_IdType eq news.u_IdType)?senderName:recName}"></p>
+                    <div th:class="${(u_IdType eq news.u_IdType)?'msgshow msg-right fr':'msgshow msg-left'}">
+                       <p th:text="${news.getN_news()}"></p>
+                    </div>
                 </div>
-                <div class="msgmain" th:if="${not #strings.isEmpty(newsList)}" th:each="news:${newsList}">
-                    <p class="msg-left">小米自营店官方客服</p>
-                    <input hidden th:with="resul1=((${senderId}==${news.u_Id}&&${u_IdType}==${news.u_IdType})?true:((${senderId}==${news.s_Id}&&${u_IdType}==${news.s_IdType})?true:false))">
-                    <p th:class="(${resul1}==true)? 'msg-right':'msg-left'" th:text="${resul1==true}?${senderName}:${reName}"></p>
-                    <div th:class="(${resul1}==true)? 'msgshow msg-right fr':'msgshow msg-left'">
-                       <p>你好啊</p>
-                    </div>                    
-                </div>
-
-                
 
             </div>
 

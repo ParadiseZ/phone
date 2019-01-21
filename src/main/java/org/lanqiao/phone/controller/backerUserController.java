@@ -28,7 +28,6 @@ public class backerUserController {
         System.out.println(user);
         System.out.println(password);
         BackUser backUser=service.getBackUser(user);
-        System.out.println("========="+backUser);
         if(user.equals(backUser.getB_user())&&password.equals( backUser.getB_password() )){
             int shopnum=service.getShopnum();
             int usernum=service.getUsernum();
@@ -39,6 +38,7 @@ public class backerUserController {
             session.setAttribute( "usernum",usernum );
             System.out.println(shopnum);
             return "bindex";
+//            return "testMy";
         }else {
             model.addAttribute( "msg" ,"用户名或密码错误，请重新登录");
             return "Blogin";
