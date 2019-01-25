@@ -1,5 +1,6 @@
 package org.lanqiao.phone.mapper;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -31,4 +32,7 @@ public interface INewsDao {
     public String getUserNameFromShop(int s_Id);
     //从管理员用户表中查询用户名
     @Select("select b_user from backstage where b_Id=#{b_Id}")
-    public String getUserNameFromBackstage(int b_Id);}
+    public String getUserNameFromBackstage(int b_Id);
+    @Insert("insert into news(u_Id,u_idType,s_Id,s_idType,n_news,n_state) values(#{u_Id},#{u_IdType},#{s_Id},#{s_IdType},#{n_news},#{n_state})")
+    public void inserNews(@Param("u_Id")int u_Id,@Param("u_IdType")String u_IdType,@Param("s_Id")int s_Id,@Param("s_IdType")String s_IdType,@Param("n_news")String n_news,@Param("n_state")String n_state);
+}

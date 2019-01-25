@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +19,12 @@ import javax.servlet.http.HttpSession;
 public class UserLoginController {
     @Autowired
     IUserLoginService iUserLoginService;
-
+    @RequestMapping("/test")
+    public String tes(HttpSession session){
+        UserLogin us = iUserLoginService.Login(UserLogin.builder().u_name("test").u_password("test").build());
+        session.setAttribute("userLogin",us);
+        return "choose::chatMain";
+    }
     @RequestMapping("/login.do")
     public String Login(HttpServletRequest req, HttpServletResponse resp, Model model) {
         String username = req.getParameter("username");
@@ -50,7 +56,7 @@ public class UserLoginController {
             HttpSession session = req.getSession();
             session.setAttribute("userLogin", retUserLogin);
 //            return "index";
-            return "choose";
+            return "index";
         }
     }
 }

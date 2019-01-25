@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -21,24 +22,14 @@ public class NewsController {
     INewsService newsService;
     @RequestMapping("/getnews")
     public String getNews(HttpServletRequest req, Model model, HttpSession session){
-        String recieverIdStr = req.getParameter("recieverId01");
-        if(StringUtils.isEmpty(recieverIdStr)){
-            recieverIdStr = req.getParameter("recieverId02");
-            if(StringUtils.isEmpty(recieverIdStr)){
-                recieverIdStr = req.getParameter("recieverId03");
-            }
-        }
-        String recieverType =req.getParameter("recieverType");
+        String receiverIdStr = req.getParameter("receiverId");
         int senderId = 0;
         String u_IdType = null;
-
         UserLogin personal = (UserLogin)session.getAttribute("userLogin");
         BackUser bck;
         if(StringUtils.isEmpty(personal)){
-            bck = (BackUser)session.getAttribute("User");
+            bck = (BackUser)session.getAttribute("buserInfo");
             if(StringUtils.isEmpty(bck)){
-
-
 
 
             }else {
@@ -60,17 +51,18 @@ public class NewsController {
         }
         List<UserConnectionInfo> userConnectionInfos = new ArrayList<>(); //信息
         List<News> newsList = new ArrayList<>();
-        if(!StringUtils.isEmpty(recieverIdStr)){
-            int receiverId = Integer.parseInt(recieverIdStr);
-            UserIdAndType check = UserIdAndType.builder().userIdFind(receiverId).userType(recieverType).build();
+        if(!StringUtils.isEmpty(receiverIdStr)){
+            int receiverId = Integer.parseInt(receiverIdStr);
+            String receiverType =req.getParameter("receiverType");
+            UserIdAndType check = UserIdAndType.builder().userIdFind(receiverId).userType(receiverType).build();
             if(!userIdAndTypeList.contains(check)){
                 userIdAndTypeList.add(check);
             }
-            newsList = newsService.getAllNews(senderId,u_IdType,receiverId,recieverType);
+            newsList = newsService.getAllNews(senderId,u_IdType,receiverId,receiverType);
             descSocketId(senderId,u_IdType,userConnectionInfos,newsService,userIdAndTypeList);
             model.addAttribute("newsList",newsList);
             model.addAttribute("userConInfo",userConnectionInfos);
-            model.addAttribute("recName",newsService.getUserNameByNum(receiverId,recieverType));
+            model.addAttribute("recName",newsService.getUserNameByNum(receiverId,receiverType));
         }else if(userIdAndTypeList.size()>0){
             UserIdAndType uit0 = userIdAndTypeList.get(0);
             newsList = newsService.getAllNews(senderId,u_IdType,uit0.getUserIdFind(),uit0.getUserType());
@@ -87,12 +79,24 @@ public class NewsController {
         return "chatonline";
     }
 
-
+    @RequestMapping("/insertNew")
+    @ResponseBody
+    public String inserNew(HttpServletRequest req){
+        int senderId = Integer.parseInt(req.getParameter("senderId"));
+        String senderType = req.getParameter("u_IdType");
+        int recId = Integer.parseInt(req.getParameter("recId"));
+        String recType = req.getParameter("recType");
+        String n_news = req.getParameter("oneNew");
+        String n_state = req.getParameter("n_state");
+        newsService.inserNews(senderId,senderType,recId,recType,n_news,n_state);
+        return "";
+    }
     //遍历连接列表，将不重复的连接进行存储
     public static synchronized void descSocketId(int senderId,String senderType,List<UserConnectionInfo> uci,INewsService ins,List<UserIdAndType> userIdAndTypeList){
         int receiverId = -1;
         String resType = "";
-        Date socketId = null;
+        String socketId = "";
+        boolean xu = false;
         for(UserIdAndType uit:userIdAndTypeList) {
             receiverId = uit.getUserIdFind();
             resType = uit.getUserType();
@@ -109,11 +113,27 @@ public class NewsController {
                 }
             }
             if (len == ConnectionInfo.ConInfoList.size()) {
-                socketId = new Date();
+                xu =true;
+                socketId = senderId+senderType+receiverId+resType;
                 ConnectionInfo connectionInfo = ConnectionInfo.builder().u_id(senderId).u_idType(senderType).s_id(receiverId).s_idType(resType).socketId(socketId).build();
                 ConnectionInfo.ConInfoList.add(connectionInfo);
             }
             uci.add(UserConnectionInfo.builder().userIdAndType(uit).socketId(socketId).usernameFind(ins.getUserNameByNum(receiverId,resType)).build());
         }
+    }
+
+    @RequestMapping("/findNews")
+    public String getNewsByIdAndType(HttpServletRequest req,Model model){
+        int senderId = Integer.parseInt(req.getParameter("senderId")) ;
+        String u_IdType = req.getParameter("u_IdType");
+        int receiverId =Integer.parseInt(req.getParameter("receiverId"));
+        String receiverType = req.getParameter("receiverType");
+        List<News> newsList = newsService.getAllNews(senderId,u_IdType,receiverId,receiverType);
+        model.addAttribute("newsList",newsList);
+        model.addAttribute("u_IdType",u_IdType);
+        model.addAttribute("senderId",senderId);
+        model.addAttribute("senderName",newsService.getUserNameByNum(senderId,u_IdType));
+        model.addAttribute("recName",newsService.getUserNameByNum(receiverId,receiverType));
+        return "chatonline::changeSign";
     }
 }

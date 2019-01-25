@@ -11,33 +11,40 @@
 </head>
 </head>
 <body class="bodyMy">
-<form method="post" id="formMy" action="/getnews" onsubmit="return checkMy()">
-    <!--<input class="sender" name="sender" th:value="${sender}"><br/><br/>-->
-    <input class="choose" name="chooseOf"><br/><br/>
-    [[${sender}]]<br/><br/>
-    <input type="hidden" value="商家" name="recieverType">
-    <input type="checkbox" class="username" checked name="recieverId01" value="1"><button class="btn" type="submit">和光头强聊天</button><br/><br/>
-    <input type="checkbox" class="username" name="recieverId02" value="2"><button class="btn" type="熊大">和熊大聊天</button><br/><br/>
-    <input type="checkbox" class="username" name="recieverId03" value="3"><button class="btn" type="submit">和熊二聊天</button><br/><br/>
+<center>
+<form method="post" th:fragment="chatMain" id="formMy" action="/getnews" onsubmit="return checkMy()">
+    <input type="hidden" class="recType" value="" name="receiverType">
+    <input type="hidden" class="recId" value="" name="receiverId">
+    <input type="checkbox" class="username" checked value="1"><button class="btnT" type="submit">咨询管理员1</button><br/><br/>
+    <input type="checkbox" class="username" value="2"><button class="btnT" type="熊大">咨询管理员2</button><br/><br/>
+    <input type="checkbox" class="username" value="3"><button class="btnT" type="submit">咨询管理员3</button><br/><br/>
+    <button type="submit">确认</button>
+</form>
+    <br/><br/>
+<form method="post" th:fragment="chatMain" id="formM" action="/getnews" onsubmit="return checkM()">
+    <input type="hidden" class="" value="商家" name="receiverType">
+    <input type="hidden" class="recId01" value="" name="receiverId">
+    <input type="checkbox" class="username" checked value="1"><button class="btnT" type="submit">咨询OPPO客服</button><br/><br/>
+    <input type="checkbox" class="username" value="2"><button class="btnT" type="">咨询VIVO客服</button><br/><br/>
+    <input type="checkbox" class="username" value="3"><button class="btnT" type="submit">咨询坚果客服</button><br/><br/>
     <button type="submit">确认</button>
 </form>
 
-
+</center>
 </body>
 <script>
     $(function () {
-        $(".btn").click(function () {
-            alert(222)
-            // var ls = $("[name='checkbox']").attr("checked");
 
-
-        })
     })
-
     function checkMy() {
         var ll = $("#formMy :checkbox[checked]").val();
-        $(".choose").val(ll);
-        return true
+        $(".recId").val(ll);
+        return true;
+    }
+    function checkM() {
+        var ll = $("#formM :checkbox[checked]").val();
+        $(".recId01").val(ll);
+        return true;
     }
 </script>
 </html>

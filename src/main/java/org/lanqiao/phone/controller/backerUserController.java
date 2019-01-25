@@ -34,9 +34,10 @@ public class backerUserController {
             int noPAssShopNum=service.getNoPAANum();
             session.setAttribute("noPAssShopNum",noPAssShopNum);
             session.setAttribute( "user",user );
+            session.setAttribute("buserInfo",backUser);
             session.setAttribute( "shopnum",shopnum );
             session.setAttribute( "usernum",usernum );
-            System.out.println(shopnum);
+            System.out.println(user);
             return "bindex";
 //            return "testMy";
         }else {

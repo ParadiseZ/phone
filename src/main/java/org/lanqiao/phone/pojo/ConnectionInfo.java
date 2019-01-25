@@ -16,6 +16,6 @@ public class ConnectionInfo {
     private String u_idType;    //发送者类型
     private int s_id;   //接收者ID
     private String s_idType;    //接收者类型
-    private Date socketId;  //会话标识ID
+    private String socketId;  //会话标识ID
     public static CopyOnWriteArrayList<ConnectionInfo> ConInfoList = new CopyOnWriteArrayList();
 }

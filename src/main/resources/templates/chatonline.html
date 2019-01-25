@@ -5,63 +5,178 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <link rel="stylesheet" th:href="@{css/chat.css}">
         <link rel="stylesheet" th:href="@{css/chatonline.css}">
+        <script type="text/javascript" th:src="@{js/jquery-1.12.4.js}"></script>
     </head>
     <body>
         <div class="main">
             <div class="leftPane">
                 <div class="showname">
-                    <span class="usernamePane" style="color: #fff;"><p th:if="not ${#strings.isEmpty(user)}" th:text="${user}"></p></span>
+                    <span class="usernamePane" style="color: #fff;"><p class="senName" th:text="${senderName}"></p></span>
+
                 </div>
 
-                <div th:if="not ${#strings.isEmpty(userConInfo)}" th:each="recInfo:${userConInfo}" data-v-2cbee71c="" class="left2 dialog active">
+                <div th:if="not ${#strings.isEmpty(userConInfo)}" th:each="recInfo:${userConInfo}" data-v-2cbee71c="" th:class="${recName eq recInfo.usernameFind?'left2 dialog active':'left2 dialog'}">
                     <div  class="dialog-avator"></div>
-
-                    <span data-v-2cbee71c="" class="dialog-name ellipsis">[[${recInfo.usernameFind}]]</span>
+                    <input type="hidden" th:class="${recName eq recInfo.usernameFind?'recId recIdChecked':'recId'}" th:value="${recInfo.getUserIdAndType().userIdFind}">
+                    <input type="hidden" th:class="${recName eq recInfo.usernameFind?'recType recTypeChecked':'recType'}" th:value="${recInfo.getUserIdAndType().userType}">
+                    <input type="hidden" th:class="${recName eq recInfo.usernameFind?'socId socIdChecked':'socId'}" th:value="${recInfo.socketId}">
+                    <span data-v-2cbee71c="" class="dialog-name ellipsis shopnameTop" th:text="${recInfo.usernameFind}"></span>
                     <div data-v-2cbee71c="" class="label dialog-label yellow">
-                        店铺
+                        [[${recInfo.getUserIdAndType().userType eq '管理员'?'管理':'店铺'}]]
                     </div>
                 </div>
-
-
-                <div data-v-2cbee71c="" class="left2 dialog active">
-                    <div  class="dialog-avator"></div>
-                    <span data-v-2cbee71c="" class="dialog-name ellipsis">巨臣昌隆服饰专营</span> 
-                    <div data-v-2cbee71c="" class="label dialog-label yellow">
-                        店铺
-                    </div>
-                </div>
-
-
             </div>
             <div class="topPane">
-                <div class="showshopname"><span class="shopname">晨晨专卖店</span></div>
+                <div class="showshopname"><span class="shopname" th:text="${recName}"></span></div>
             </div>
 
 
-            <div class="chatmain">
-                <div class="msgmain" th:if="${!#strings.isEmpty(newsList)}" th:each="news:${newsList}">
+            <div class="chatmain" id="chatmain">
+                <div  th:fragment="changeSign" class="msgmain" th:if="${!#strings.isEmpty(newsList)}" th:each="news:${newsList}">
                     <!--<p class="msg-left">小米自营店官方客服</p>-->
                     <p th:class="${(u_IdType eq news.u_IdType)?'msg-right':'msg-left'}" th:text="${(u_IdType eq news.u_IdType)?senderName:recName}"></p>
                     <div th:class="${(u_IdType eq news.u_IdType)?'msgshow msg-right fr':'msgshow msg-left'}">
                        <p th:text="${news.getN_news()}"></p>
                     </div>
                 </div>
-
             </div>
-
-
 
 
             <div class="buttomPane">
-                <textarea class="inputChat" placeholder="请输入"></textarea>
-                <button class="sure">发送</button>
+                <textarea id="inputChat" class="inputChat" placeholder="请输入"></textarea>
+                <button class="sure" onclick="send()" onkeydown="sendByEnter(event)">发送</button>
             </div>
         </div>
+
+        <input type="hidden" class="senderName" th:value="${senderName}">
+        <input type="hidden" class="u_IdType" th:value="${u_IdType}">
+
     </body>
     <script>
+        var cm = document.getElementById("chatmain");
+        cm.scrollTop=cm.scrollHeight;
+        var websocket=null;
+        var senderID = [[${senderId}]];
+        var u_IdType = $(".u_IdType").val();
+        var div = $(".left2");
+        var state=null;
+        var recIdVar = document.getElementsByClassName("recId");
+        var recTypeVar = document.getElementsByClassName("recType");
+        var socketIdVar = document.getElementsByClassName("socId");
+        var nameAll = document.getElementsByClassName("dialog-name");
+        chatCon();
         $(function () {
-            var leftPane = $(".leftPane");
-            var leftList = $(leftPane).getElementsByClassName("left2");
-        })
+            for(var sumNum=0;sumNum<div.length;sumNum++){
+                div[sumNum].index=sumNum;
+                $(div[sumNum]).click(function () {
+                    $(".shopname").text($(nameAll[this.index]).text());
+                    for(var rem=0;rem<div.length;rem++){
+                        div[rem].index=rem;
+                        div[rem].className="left2 dialog";
+                        recIdVar[rem].className="recId";
+                        recTypeVar[rem].className="recType";
+                        socketIdVar[rem].className="socId";
+
+                    }
+                    this.className="left2 dialog active";
+                    recIdVar[this.index].className="recId recIdChecked";
+                    recTypeVar[this.index].className="recType recTypeChecked";
+                    socketIdVar[this.index].className="socId socIdChecked";
+                    $.ajax({
+                        url:"/findNews?senderId="+senderID+"&u_IdType="+u_IdType+"&receiverId="+$(recIdVar[this.index]).val()+"&receiverType="+$(recTypeVar[this.index]).val()+"&socketId="+$(socketIdVar[this.index]).val(),
+                        success:function (data) {
+                            $(".chatmain").empty();
+                            $(".chatmain").html(data);
+                            cm.scrollTop=cm.scrollHeight;
+                            websocket.close();
+                            chatCon();
+                            websocket.onmessage = function(event) {
+                                console.log("回调信息",event.data)
+                                setMessageInnerHTML(event.data);
+                            }
+                        }
+                    })
+                })
+            }
+        });
+
+        function chatCon(){
+            //判断当前浏览器是否支持WebSocket
+            if ('WebSocket' in window) {
+                var url = "ws://" + window.location.host +"/webSocket/webSocketOneToOne/1,123"
+                websocket = new WebSocket("ws://localhost:8080/webSocketOneToOne/"+senderID+"+"+u_IdType+","+$(".socIdChecked").val()+","+$(".senName").text());
+                state=1;
+            } else {
+                alert('当前浏览器 Not support websocket')
+            }
+        }
+        //将消息显示在网页上
+        function setMessageInnerHTML(innerHTML) {
+            var inner = innerHTML.split(",");
+            document.getElementById('chatmain').innerHTML += inner[0];
+            cm.scrollTop=cm.scrollHeight;
+            var msgcheck = document.getElementById('inputChat').value;
+            if(msgcheck!=""){
+                var urlSub="/insertNew?senderId="+senderID+"&u_IdType="+u_IdType+"&recId="+$(".recIdChecked").val()+"&recType="+$(".recTypeChecked").val()+"&oneNew="+msgcheck+"&n_state=";
+                if(inner[1]=="未读"){
+                    urlSub=urlSub+"未读";
+                }else {
+                    urlSub=urlSub+"已读"
+                }
+                $.ajax({
+                    url:urlSub,
+                    success:function (data) {
+                        $("#inputChat").val("");
+                        $("#inputChat").focus();
+                    }
+                })
+            }
+        }
+        //关闭WebSocket连接
+        function closeWebSocket() {
+            websocket.close();
+        }
+
+        //发送消息
+        function send() {
+            var message = document.getElementById('inputChat').value;
+            //message作为发送的信息，role作为发送的对象标识，socketId是此次会话的标识
+            websocket.send(JSON.stringify({'message':message,'role':$(".recIdChecked").val()+"+"+$(".recTypeChecked").val()+","+$(".shopname").text(),'socketId':$(".socIdChecked").val()}));
+        }
+
+        function sendByEnter(e){
+            if(!e)
+                e=window.event;
+            if((e.keyCode||e.which==13)){
+                send();
+            }
+        }
+        websocket.onmessage = function(event) {
+            console.log("回调信息",event.data)
+            setMessageInnerHTML(event.data);
+        }
+        //连接发生错误的回调方法
+        websocket.onerror = function() {
+            setMessageInnerHTML("WebSocket连接发生错误");
+        };
+        //连接成功建立的回调方法
+        websocket.onopen = function() {
+            // setMessageInnerHTML("WebSocket连接成功");
+        }
+        //连接关闭的回调方法
+        websocket.onclose = function() {
+            // setMessageInnerHTML("WebSocket连接关闭");
+        }
+        //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+
+        window.onbeforeunload = function() {
+            closeWebSocket();
+        }
+
+        //接收到消息的回调方法
+        websocket.onmessage = function(event) {
+            console.log("回调信息",event.data)
+            setMessageInnerHTML(event.data);
+        }
     </script>
 </html>
