@@ -2,10 +2,7 @@ package org.lanqiao.phone.service.impl;
 
 import org.apache.ibatis.annotations.Select;
 import org.lanqiao.phone.mapper.BackerUserMapper;
-import org.lanqiao.phone.pojo.BackUser;
-import org.lanqiao.phone.pojo.Rate;
-import org.lanqiao.phone.pojo.ShopUser;
-import org.lanqiao.phone.pojo.User;
+import org.lanqiao.phone.pojo.*;
 import org.lanqiao.phone.service.BackUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,7 +47,9 @@ public class BackUserServiceImpl implements BackUserService {
 
     @Override
     public void deleteAlluser(int[] a) {
+        for (int k:a){
         backerUserMapper.deleteAll( a );
+            System.out.println(k);}
     }
 
     @Override
@@ -91,6 +90,51 @@ public class BackUserServiceImpl implements BackUserService {
     @Override
     public int getNoPAANum() {
         return backerUserMapper.getnoPassShopNum();
+    }
+
+    @Override
+    public void UpDatePass(String s_shopname) {
+        backerUserMapper.updatePass( s_shopname);
+    }
+
+    @Override
+    public ShopUser thing(String s_shopname) {
+        return backerUserMapper.thing(s_shopname);
+    }
+
+    @Override
+    public void deaftPass(String s_shopname) {
+        backerUserMapper.defaultPass(s_shopname);
+    }
+
+    @Override
+    public List <Rate> getUserPING(String r_news, int startPage, int pageSize) {
+        return backerUserMapper.getRateList( r_news,startPage,pageSize );
+    }
+
+    @Override
+    public List <TouSu> getTList() {
+        return backerUserMapper.getTouSuList();
+    }
+
+    @Override
+    public void deleteTOU(int t_Id) {
+        backerUserMapper.deleteTousu( t_Id );
+    }
+
+    @Override
+    public int getTousuNUM() {
+        return backerUserMapper.getPINGnum();
+    }
+
+    @Override
+    public void SendEmailY(int t_Id) {
+        backerUserMapper.yonghuEmail( t_Id );
+    }
+
+    @Override
+    public int getAllTouNUM() {
+        return backerUserMapper.getAllTouSuNum();
     }
 
 }

@@ -1,5 +1,8 @@
 package org.lanqiao.phone.pojo;
 
+import lombok.Data;
+
+@Data
 public class ShopUser {
     private int s_Id;
     private String s_user;
@@ -12,7 +15,9 @@ public class ShopUser {
     private  String s_money;
     private  String s_home;
     private  String s_agree;
-
+    private String s_pinglun;
+    private String s_detail;
+    private String s_emial;
     public ShopUser() {
     }
 
@@ -41,6 +46,22 @@ public class ShopUser {
         this.s_money = s_money;
         this.s_home = s_home;
         this.s_agree = s_agree;
+    }
+
+    public String getS_pinglun() {
+        return s_pinglun;
+    }
+
+    public void setS_pinglun(String s_pinglun) {
+        this.s_pinglun = s_pinglun;
+    }
+
+    public String getS_detail() {
+        return s_detail;
+    }
+
+    public void setS_detail(String s_detail) {
+        this.s_detail = s_detail;
     }
 
     public int getS_Id() {
@@ -129,5 +150,22 @@ public class ShopUser {
 
     public void setS_agree(String s_agree) {
         this.s_agree = s_agree;
+    }
+
+    @Override
+    public String toString() {
+        return "ShopUser{" +
+                "s_Id=" + s_Id +
+                ", s_user='" + s_user + '\'' +
+                ", s_password='" + s_password + '\'' +
+                ", s_shopname='" + s_shopname + '\'' +
+                ", s_license='" + s_license + '\'' +
+                ", s_licenseid=" + s_licenseid +
+                ", s_name='" + s_name + '\'' +
+                ", s_idcard='" + s_idcard + '\'' +
+                ", s_money='" + s_money + '\'' +
+                ", s_home='" + s_home + '\'' +
+                ", s_agree='" + s_agree + '\'' +
+                '}';
     }
 }
