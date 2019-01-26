@@ -31,7 +31,7 @@
 							<li th:if="${#strings.isEmpty(session.userLogin)}" style="dispaly:none;">|</li>
 							<li th:if="${!#strings.isEmpty(session.userLogin)}"><a href="#" target="_blank" th:text="${session.userLogin.u_name}"></a></li>
 							<li th:if="${!#strings.isEmpty(session.userLogin)}" style="dispaly:none;">|</li>
-							<li><a href="/getnews">消息通知</a></li>
+							<li th:if="${!#strings.isEmpty(session.userLogin)}"><a href="/getnews">消息通知</a></li>
 						</ul>
 					</div>
 					<div class="clear"></div>
