@@ -240,23 +240,24 @@ function link_operating(name,title){
 				</a>
 				<ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
 				 <!-- <li><a href="javascript:void(0" name="Systems.html" title="系统设置" class="iframeurl"><i class="icon-cog"></i>网站设置</a></li> -->
-				 <li><a href="javascript:void(0)" name="admin_info.html" title="个人信息" class="iframeurl"><i class="icon-user"></i>个人资料</a></li>
+				 <!--<li><a href="javascript:void(0)" name="admin_info.html" title="个人信息" class="iframeurl"><i class="icon-user"></i>个人资料</a></li>-->
 				 <li class="divider"></li>
-				 <li><a href="javascript:ovid(0)" id="Exit_system"><i class="icon-off"></i>退出</a></li>
+				 <!--<li><a href="javascript:ovid(0)" id="Exit_system" name="Blogin.html"><i class="icon-off"></i>退出</a></li>-->
+					<li><a href="/Blogin.html"  id="Exit_system"><i class="icon-off"></i>退出</a></li>
 				</ul>
 			   </li>
 	           <li class="purple">
-				<a data-toggle="dropdown" class="dropdown-toggle" href="#"><i class="icon-bell-alt"></i><span class="badge badge-important">8</span></a>
+				<a data-toggle="dropdown" class="dropdown-toggle" href="#"><i class="icon-bell-alt"></i><span class="badge badge-important">[[${session.noPAssShopNum+session.tousunum}]]</span></a>
 							<ul class="pull-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-close">
-                            <li class="dropdown-header"><i class="icon-warning-sign"></i>8条通知</li>
+                            <li class="dropdown-header"><i class="icon-warning-sign"></i></li>
                             <li>
-                              <a href="#">
+                              <a href="/getnews">
 										<div class="clearfix">
 											<span class="pull-left">
 												<i class="btn btn-xs no-hover btn-pink icon-comments-alt"></i>
 												用户投诉消息
 											</span>
-											<span class="pull-right badge badge-info">+12</span>
+											<span class="pull-right badge badge-info">[[${session.tousunum}]]</span>
 										</div>
 									</a>
 								</li>
@@ -271,7 +272,7 @@ function link_operating(name,title){
 												<i class="btn btn-xs no-hover btn-info icon-twitter"></i>
 												审批消息
 											</span>
-											<span class="pull-right badge badge-info">+11</span>
+											<a ><span class="pull-right badge badge-info">[[${session.noPAssShopNum}]]</span></a>
 										</div>
 									</a>
 								</li>
@@ -328,7 +329,7 @@ function link_operating(name,title){
 					</div><!-- #sidebar-shortcuts -->
 					<div id="menu_style" class="menu_style">
 					<ul class="nav nav-list" id="nav_list">
-				     <li class="home"><a href="javascript:void(0)" name="Bhome.html" class="iframeurl" title=""><i class="icon-home"></i><span class="menu-text"> 系统首页 </span></a></li>
+				     <li class="home"><a href="javascript:void(0)" name="/Bhome" class="iframeurl" title=""><i class="icon-home"></i><span class="menu-text"> 系统首页 </span></a></li>
                      
                   <li>
 					<a href="#" class="dropdown-toggle"><i class="icon-user"></i><span class="menu-text"> 用户管理 </span><b class="arrow icon-angle-down"></b></a>
@@ -340,7 +341,7 @@ function link_operating(name,title){
 				  <li><a href="#" class="dropdown-toggle"><i class="icon-laptop"></i><span class="menu-text"> 管理商家 </span><b class="arrow icon-angle-down"></b></a>
 							<ul class="submenu">
 								<li class="home"><a href="javascript:void(0)" name="/shopList" title="商家列表" class="iframeurl"><i class="icon-double-angle-right"></i>商家列表</a></li>
-                                <li class="home"><a href="javascript:void(0)" name="/nopassSHOP" title="商家审核" class="iframeurl"><i class="icon-double-angle-right"></i>商家审核<span class="badge badge-danger">[[${session.noPAssShopNum}]]</span></a></li>
+                                <li class="home"><a href="javascript:void(0)" name="/nopassSHOP" title="商家审核" class="iframeurl"><i class="icon-double-angle-right"></i>商家审核</a></li>
 							</ul>
 						</li>
 						<li><a href="#" class="dropdown-toggle"><i class="icon-comments-alt"></i><span class="menu-text"> 评论管理 </span><b class="arrow icon-angle-down"></b></a>
@@ -351,7 +352,7 @@ function link_operating(name,title){
 						</li>
 					 <li><a href="#" class="dropdown-toggle"><i class="icon-bookmark"></i><span class="menu-text"> 投诉管理 </span><b class="arrow icon-angle-down"></b></a>
 							<ul class="submenu">
-								<li class="home"><a href="javascript:void(0)" name="BFeedback.html" title="投诉列表" class="iframeurl"><i class="icon-double-angle-right"></i>投诉列表</a></li>
+								<li class="home"><a href="javascript:void(0)" name="/tousu" title="投诉列表" class="iframeurl"><i class="icon-double-angle-right"></i>投诉列表</a></li>
                                 
 							</ul>
 						</li>

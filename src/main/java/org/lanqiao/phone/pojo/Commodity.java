@@ -25,4 +25,5 @@ public class Commodity {
     private String c_zhiwen;//是否支持指纹
     private String c_erji;//耳机
     private String c_showtime;//上架时间
+    private String c_price;//单品价格
 }

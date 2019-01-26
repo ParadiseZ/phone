@@ -11,4 +11,5 @@ public interface INewsService {
     public List<News> getAllNews(int u_Id,String u_IdType,int s_Id,String s_idType);
     public String getUserNameByNum(Integer u_Id,String u_IdType);
     public List<UserIdAndType> getIdAndType(int u_id,String u_idType);
+    public void inserNews(int u_Id,String u_IdType,int s_Id,String s_IdType,String n_news,String n_state);
 }

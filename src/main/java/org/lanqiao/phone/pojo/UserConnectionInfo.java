@@ -8,6 +8,6 @@ import java.util.Date;
 @Data
 public class UserConnectionInfo {
     private UserIdAndType userIdAndType;
-    private Date socketId;
+    private String socketId;
     private String usernameFind;
 }

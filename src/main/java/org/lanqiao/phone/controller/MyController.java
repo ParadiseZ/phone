@@ -159,7 +159,7 @@ public class MyController {
         int len = 0;
         for(ConnectionInfo connInfo:ConnectionInfo.ConInfoList){
             if(sender == connInfo.getS_id()&&receiver == connInfo.getU_id()){
-                socketId = connInfo.getSocketId();
+//                socketId = connInfo.getSocketId();
                 break;
             }else{
                 len++;
@@ -167,7 +167,7 @@ public class MyController {
         }
         if(len==ConnectionInfo.ConInfoList.size()){
             socketId = new Date();
-            ConnectionInfo connectionInfo = ConnectionInfo.builder().u_id(sender).s_id(receiver).socketId(socketId).build();
+            ConnectionInfo connectionInfo = ConnectionInfo.builder().u_id(sender).s_id(receiver).socketId("").build();
             ConnectionInfo.ConInfoList.add(connectionInfo);
         }
         recieverIdAndSocketId.put(receiver,socketId);

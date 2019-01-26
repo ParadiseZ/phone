@@ -69,12 +69,13 @@
 		<div class="danpin center">
 			
 			<div class="biaoti center">小米手机</div>
-			<div class="main center">
+			<div class="main center" th:each="a,state:${commodityList}">
+
 				<div class="mingxing fl mb20" style="border:2px solid #fff;width:230px;cursor:pointer;" onmouseout="this.style.border='2px solid #fff'" onmousemove="this.style.border='2px solid red'">
 					<div class="sub_mingxing"><a href="./xiangqing.html" target="_blank"><img src="./image/liebiao_xiaomi6.jpg" alt=""></a></div>
-					<div class="pinpai"><a href="./xiangqing.html" target="_blank">小米6</a></div>
-					<div class="youhui">5.16早10点开售</div>
-					<div class="jiage">2499.00元</div>
+					<div class="pinpai"><a  target="_blank" th:text="${a.c_name}"  th:href="@{/xiangqing.do(c_name=${a.c_name})}">小米6</a></div>
+					<div class="youhui" th:text="${a.c_time}">5.16早10点开售</div>
+					<div class="jiage" th:text="${a.c_price}">2499.00元</div>
 				</div>
 				<div class="mingxing fl mb20" style="border:2px solid #fff;width:230px;cursor:pointer;" onmouseout="this.style.border='2px solid #fff'" onmousemove="this.style.border='2px solid red'">
 					<div class="sub_mingxing"><a href=""><img src="./image/liebiao_xiaomi5c.jpg" alt=""></a></div>
@@ -100,8 +101,8 @@
 					<div class="youhui">“暗夜之眼”超感光相机 / 无孔式超声波</div>
 					<div class="jiage">1999.00元</div>
 				</div>
-
 				<div class="clear"></div>
+
 			</div>
 			<div class="main center mb20">
 				<div class="mingxing fl mb20" style="border:2px solid #fff;width:230px;cursor:pointer;" onmouseout="this.style.border='2px solid #fff'" onmousemove="this.style.border='2px solid red'">

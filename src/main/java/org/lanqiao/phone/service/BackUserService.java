@@ -1,9 +1,6 @@
 package org.lanqiao.phone.service;
 
-import org.lanqiao.phone.pojo.BackUser;
-import org.lanqiao.phone.pojo.Rate;
-import org.lanqiao.phone.pojo.ShopUser;
-import org.lanqiao.phone.pojo.User;
+import org.lanqiao.phone.pojo.*;
 
 import java.util.List;
 
@@ -37,4 +34,22 @@ public interface BackUserService {
     public List<ShopUser> getNoPass();
     //tong计为审批商家数量
     public  int getNoPAANum();
+   //通过审批
+  public void UpDatePass( String s_shopname);
+    //
+    public ShopUser thing(String s_shopname);
+    //拒绝通过并发送消息
+    public void deaftPass(String s_shopname);
+    //通过客户查询评论
+    public List<Rate> getUserPING( String r_news,int startPage,int pageSize );
+    //查询所有评论
+    public List<TouSu> getTList();
+    //tong过t_Id逐个删除投诉
+    public  void deleteTOU(int t_Id);
+    //统计未处理投诉数量
+    public int getTousuNUM();
+    //处理投诉（用户）
+    public void SendEmailY(int t_Id);
+    //tong计所有投诉shu量
+    public  int getAllTouNUM();
 }

@@ -9,12 +9,12 @@
     </script>
 </head>
 <body>
-<br/><input id="text" type="text"/>
+<br/><textarea id="text" type=""></textarea>
 
-<p>发送者</p><input type="text" class="sender" name="sender" th:value="${sender}">
-<p>接收者</p><input type="text" class="reciever" name="reciever" th:value="${reciever}">
-<p>标识ID</p><input type="text" class="chatID" th:value="${socketID}">
-<button type="button" id="change">切换发送者</button>
+<p>发送者</p><input type="text" class="sender" name="sender" th:value="1">
+<p>接收者</p><input type="text" class="reciever" name="reciever" th:value="2">
+<p>标识ID</p><input type="text" class="chatID" th:value="123">
+<button type="button" id="change">连接</button>
 <button onclick="send()">发送消息</button>
 <hr/>
 <button onclick="closeWebSocket()">关闭WebSocket连接</button>
@@ -23,46 +23,54 @@
 </body>
 <script>
     var websocket = null;
-    var i=0;//判断当前浏览器是否支持WebSocket
-    if ('WebSocket' in window) {
-        var url = "ws://" + window.location.host +"/webSocket/webSocketOneToOne/1,123"
-        websocket = new WebSocket("ws://localhost:8080/webSocketOneToOne/"+$(".sender").val()+","+$(".chatID").val());
-    } else {
-        alert('当前浏览器 Not support websocket')
-    }
-    //连接发生错误的回调方法
-    websocket.onerror = function() {
-        setMessageInnerHTML("WebSocket连接发生错误");
-    };
-    //连接成功建立的回调方法
-    websocket.onopen = function() {
-        setMessageInnerHTML("WebSocket连接成功");
-    }
-    //接收到消息的回调方法
-    websocket.onmessage = function(event) {
-        console.log("回调信息",event.data)
-        setMessageInnerHTML(event.data);
-    }
-    //连接关闭的回调方法
-    websocket.onclose = function() {
-        setMessageInnerHTML("WebSocket连接关闭");
-    }
-    //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+    $(function () {
+        $("#change").click(function () {
+            var i=0;//判断当前浏览器是否支持WebSocket
+            if ('WebSocket' in window) {
+                var url = "ws://" + window.location.host +"/webSocket/webSocketOneToOne/1,123";
+                websocket = new WebSocket("ws://localhost:8080/webSocketOneToOne/"+$(".sender").val()+","+$(".chatID").val());
+            } else {
+                alert('当前浏览器 Not support websocket')
+            }
+            //连接发生错误的回调方法
+            websocket.onerror = function() {
+                setMessageInnerHTML("WebSocket连接发生错误");
+            };
+            //连接成功建立的回调方法
+            websocket.onopen = function() {
+                setMessageInnerHTML("WebSocket连接成功");
+            }
+            //接收到消息的回调方法
+            websocket.onmessage = function(event) {
+                console.log("回调信息",event.data)
+                setMessageInnerHTML(event.data);
+            }
+            //连接关闭的回调方法
+            websocket.onclose = function() {
+                setMessageInnerHTML("WebSocket连接关闭");
+            }
+            //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+            window.onbeforeunload = function() {
+                // closeWebSocket();
+                websocket.close();
+            }
+        })
 
-    window.onbeforeunload = function() {
-        closeWebSocket();
-    }
-    //将消息显示在网页上
-    function setMessageInnerHTML(innerHTML) {
-        document.getElementById('message').innerHTML += innerHTML + '<br/>';
-    }
-    //关闭WebSocket连接
-    function closeWebSocket() {
-        websocket.close();
-    }
+        //将消息显示在网页上
+        function setMessageInnerHTML(innerHTML) {
+            document.getElementById('message').innerHTML += innerHTML + '<br/>';
+        }
+        //关闭WebSocket连接
+        function closeWebSocket() {
+
+        }
+    })
+
     //发送消息
     function send() {
         var message = document.getElementById('text').value;
+        $("#text").val("");
+        $("#text").focus();
         //message作为发送的信息，role作为发送的对象标识，socketId是此次会话的标识
         websocket.send(JSON.stringify({'message':message,'role':$(".reciever").val(),'socketId':$(".chatID").val()}));
     }

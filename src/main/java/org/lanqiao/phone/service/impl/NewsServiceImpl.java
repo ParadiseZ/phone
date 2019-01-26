@@ -44,4 +44,9 @@ public class NewsServiceImpl implements INewsService {
        }
        return asReciever;
     }
+
+    @Override
+    public void inserNews(int u_Id,String u_IdType,int s_Id,String s_IdType,String n_news,String n_state){
+        newsDao.inserNews(u_Id,u_IdType,s_Id,s_IdType,n_news,n_state);
+    }
 }
