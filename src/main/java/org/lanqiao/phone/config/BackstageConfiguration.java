@@ -14,5 +14,7 @@ public class BackstageConfiguration implements WebMvcConfigurer {
         registry.addViewController( "BFeedback.html" ).setViewName( "BFeedback" );
         registry.addViewController("/login.html").setViewName("login");
         registry.addViewController("/index.html").setViewName("index");
+      registry.addViewController( "Bshopping_detailed.html" ).setViewName( "Bshopping_detailed" );
+       registry.addViewController( "Blogin.html" ).setViewName( "Blogin" );
     }
 }
