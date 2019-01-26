@@ -31,6 +31,7 @@
  <div class="Feedback_style">
    <div class="search_style">
        <span><div class="prompt" style="text-align: center;font-size:16px" >当前共有<span style="color: darkorange"><b>[[${session.AllTouNum}]]</b></span>条投诉,还有<span style="color: red"><b>[[${session.tousunum}]]</b></span>条投诉未处理</div>
+            <div style="float:right"><span>每页显示<b>[[${pm.pageSize}]]</b>条</span></div>
        <!--<div class="prompt" style="text-align: center;font-size:16px" >当前共有</div></span>-->
       <!--<ul class="search_content clearfix">-->
        <!--<li><label class="l_f">投诉客户</label><input name="" type="text" class="text_add" placeholder="输入信息信息" style=" width:250px"></li>-->
@@ -63,7 +64,7 @@
           </tr>
       </thead>
 	<tbody>
-		<tr th:each="tt:${touSuList}">
+		<tr th:each="tt:${ pm.getRecords()}">
      <!--<td><label><input type="checkbox" class="ace"><span class="lbl"></span></label></td>-->
           <td th:text="${tt.u_name}">1</td>
           <td th:text="${tt.u_email}">张小泉</td>
@@ -87,6 +88,31 @@
 
         </tbody>
       </table>
+        <div style="float:right">
+             <nav aria-label="Page navigation">
+                 <ul class="pagination" th:with="pageNum=${pm.getTotalPageNum()}">
+
+                     <li><a th:href="@{/tousu?currentPage=}+${pm.startPage}"><span onclick="search()">首页</span></a></li>
+
+                     <li  >
+                         <a  th:href="@{/tousu?currentPage=}+${pm.prePageNum}" aria-label="Previous">
+                             <span aria-hidden="true" >&laquo;</span>
+                         </a>
+                     </li>
+                     <li th:each="arr:${#numbers.sequence(1,pageNum,1)}"><a th:href="@{/tousu?currentPage=}+${arr}">[[${arr}]]</a></li>
+                     <!--<forEach step="1" var="i" begin="1" end="${pm.totalPageNum}">-->
+                     <!--<li onclick="search(${i})"><a href="#"></a></li>-->
+                     <!--</forEach>-->
+                     <li onclick="search()">
+                         <a th:href="@{/tousu?currentPage=}+${pm.nextPageNum}" class="page"  aria-label="Next">
+                             <span aria-hidden="true">&raquo;</span>
+                         </a>
+                     </li>
+                     <li ><a th:href="@{/tousu?currentPage=}+${pm.endPage}"><span >尾页</span></a></li>
+
+                 </ul>
+             </nav>
+         </div>
     </div>
      <form id="delteForm"  action="" method="post">
          <input type="hidden" name="_method" value="delete"/>

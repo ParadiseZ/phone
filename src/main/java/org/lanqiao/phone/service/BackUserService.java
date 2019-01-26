@@ -1,5 +1,6 @@
 package org.lanqiao.phone.service;
 
+import org.apache.ibatis.annotations.Param;
 import org.lanqiao.phone.pojo.*;
 
 import java.util.List;
@@ -31,7 +32,7 @@ public interface BackUserService {
     //查询评论数量
     public int getPinNum();
     //cha询未审批商家
-    public List<ShopUser> getNoPass();
+    public List<ShopUser> getNoPass( int startPage,int pageSize);
     //tong计为审批商家数量
     public  int getNoPAANum();
    //通过审批
@@ -42,8 +43,8 @@ public interface BackUserService {
     public void deaftPass(String s_shopname);
     //通过客户查询评论
     public List<Rate> getUserPING( String r_news,int startPage,int pageSize );
-    //查询所有评论
-    public List<TouSu> getTList();
+    //查询所有tousu
+    public List<TouSu> getTList(int startPage,int pageSize );
     //tong过t_Id逐个删除投诉
     public  void deleteTOU(int t_Id);
     //统计未处理投诉数量

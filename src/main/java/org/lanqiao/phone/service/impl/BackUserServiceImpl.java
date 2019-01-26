@@ -1,5 +1,6 @@
 package org.lanqiao.phone.service.impl;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.lanqiao.phone.mapper.BackerUserMapper;
 import org.lanqiao.phone.pojo.*;
@@ -83,8 +84,8 @@ public class BackUserServiceImpl implements BackUserService {
     }
 
     @Override
-    public List <ShopUser> getNoPass() {
-        return backerUserMapper.getWeiShen();
+    public List <ShopUser> getNoPass( int startPage,int pageSize) {
+        return backerUserMapper.getWeiShen(startPage,pageSize);
     }
 
     @Override
@@ -113,8 +114,8 @@ public class BackUserServiceImpl implements BackUserService {
     }
 
     @Override
-    public List <TouSu> getTList() {
-        return backerUserMapper.getTouSuList();
+    public List <TouSu> getTList(int startPage,int pageSize ) {
+        return backerUserMapper.getTouSuList(startPage,pageSize);
     }
 
     @Override

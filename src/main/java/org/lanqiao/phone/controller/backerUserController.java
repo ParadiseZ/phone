@@ -177,11 +177,19 @@ public String deletePingL(@PathVariable int id){
 //查询未审批的
 // 商家
 @RequestMapping("/nopassSHOP")
-public  String GetNopassShop(Model model, HttpSession session ){
+public  String GetNopassShop(Model model, HttpSession session,HttpServletRequest req){
     int noPAssShopNum=service.getNoPAANum();
     session.setAttribute("noPAssShopNum",noPAssShopNum);
-       List<ShopUser>shopNoUserList= service.getNoPass();
-       model.addAttribute( "shopNoUserList",shopNoUserList );
+    int currentPage = 1;
+    if(!StringUtils.isEmpty( req.getParameter( "currentPage" ) )){
+        currentPage = Integer.parseInt(req.getParameter( "currentPage" ));
+    }
+    System.out.println("ddddddddddddddddddddddd"+noPAssShopNum);
+    PageModel pm = new PageModel( currentPage,noPAssShopNum,5 );
+       List<ShopUser>shopNoUserList= service.getNoPass(pm.getStartIndex(),pm.getPageSize());
+       pm.setRecords(shopNoUserList );
+//       model.addAttribute( "shopNoUserList",shopNoUserList );
+    model.addAttribute( "pm",pm );
         return "BShops_Audit";
 }
 @RequestMapping("/UpdatepassSHOP")
@@ -234,12 +242,18 @@ public String getDeleteNum(HttpServletRequest req,HttpSession session){
     }
     //查询投诉
     @RequestMapping("/tousu")
-    public  String getTOUSuList(Model model,HttpSession session ){
-      List<TouSu> touSuList= service.getTList();
+    public  String getTOUSuList(Model model,HttpSession session ,HttpServletRequest req){
         int tousunum=service.getTousuNUM();
         session.setAttribute("tousunum",tousunum);
-
-      model.addAttribute( "touSuList",touSuList );
+        int currentPage = 1;
+        if(!StringUtils.isEmpty( req.getParameter( "currentPage" ) )){
+            currentPage = Integer.parseInt(req.getParameter( "currentPage" ));
+        }
+        PageModel pm = new PageModel( currentPage,tousunum,5 );
+      List<TouSu> touSuList= service.getTList(pm.getStartIndex(),pm.getPageSize());
+        pm.setRecords(touSuList );
+//   model.addAttribute( "touSuList",touSuList );
+        model.addAttribute( "pm",pm );
         return "BFeedback";
     }
     //删除投诉

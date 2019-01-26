@@ -53,8 +53,8 @@ public interface BackerUserMapper {
     @Select( "select  u_name,r_news,c_name,s_shopname from user u,shop s,rate r,commodity c where u.u_Id=r.u_Id and r.c_Id=c.c_Id and c.s_Id=s.s_Id and r_news like concat('%',#{r_news},'%') limit #{startPage},#{pageSize}" )
     public  List<Rate> getRateList(@Param( "r_news" ) String r_news,@Param("startPage") int startPage, @Param("pageSize")int pageSize);
     //cha询为审批商家
-    @Select( "select *from shop where s_agree='未通过'")
-    public List<ShopUser> getWeiShen();
+    @Select( "select *from shop where s_agree='未通过'limit #{startPage},#{pageSize}")
+    public List<ShopUser> getWeiShen(@Param("startPage") int startPage, @Param("pageSize")int pageSize);
     //tong计为审批商家数量
     @Select( "select count(*) from shop where  s_agree='未通过'" )
     public  int getnoPassShopNum();
@@ -68,8 +68,8 @@ public interface BackerUserMapper {
    @Update("update shop set s_agree='拒绝' where s_shopname = #{s_shopname} ")
    public void defaultPass( String s_shopname);
    //查询所有投诉
-    @Select("SELECT t.t_Id,t.u_Id,t.c_Id,t.s_Id,u_name,u_email,t_news,t_read,c_name,s_shopname,s_emial from user u,tousu t,commodity c,shop s where u.u_Id=t.u_Id and t.c_Id=c.c_Id and c.s_Id=s.s_Id;")
-    public List<TouSu> getTouSuList();
+    @Select("SELECT t.t_Id,t.u_Id,t.c_Id,t.s_Id,u_name,u_email,t_news,t_read,c_name,s_shopname,s_emial from user u,tousu t,commodity c,shop s where u.u_Id=t.u_Id and t.c_Id=c.c_Id and c.s_Id=s.s_Id limit #{startPage},#{pageSize}")
+    public List<TouSu> getTouSuList(@Param("startPage") int startPage, @Param("pageSize")int pageSize);
     //tong过t_Id逐个删除投诉
     @Delete("delete from tousu where t_Id=#{t_Id}")
     public  void deleteTousu(int t_Id);

@@ -54,7 +54,7 @@ public String  senshopemial(@PathVariable int id) throws MessagingException {
     //设置要发送的消息
     Message msg = new MimeMessage(session);
     msg.setFrom(new InternetAddress("2466213746@qq.com"));//发送者的用户名，须和下面的connect方法中的用户名一致，不然要报错，但看教程里的并没有一致
-    msg.setText("有用户投诉，先对你们发出警告，请认真对待每一个客户");
+    msg.setText("有用户投诉，对你们发出警告，请认真对待每一个客户");
 
     //设置用于传输的类
     Transport transport = session.getTransport();
